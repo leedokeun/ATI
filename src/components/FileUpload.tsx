@@ -63,8 +63,8 @@ export default function FileUpload({ onDataParsed }: FileUploadProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center p-12 border-2 border-dashed transition-colors cursor-pointer",
-        isDragging ? "border-[#F27D26] bg-[#F27D26]/10" : "border-[#141414]/40 hover:bg-[#141414]/5"
+        "flex flex-col items-center justify-center p-16 border-2 border-dashed rounded-xl transition-all cursor-pointer bg-white shadow-sm",
+        isDragging ? "border-[#F37321] bg-[#F37321]/5" : "border-gray-300 hover:border-[#F37321] hover:bg-gray-50"
       )}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -82,10 +82,10 @@ export default function FileUpload({ onDataParsed }: FileUploadProps) {
           }
         }}
       />
-      <div className="text-[10px] font-bold uppercase tracking-widest opacity-60 flex flex-col items-center gap-2">
-        <UploadCloud className="w-8 h-8 mb-2" />
-        <span>DRAG LOG TO IMPORT</span>
-        <span className="font-mono opacity-60">or click to browse (.csv, .log)</span>
+      <div className="flex flex-col items-center gap-3">
+        <UploadCloud className="w-12 h-12 text-[#F37321] mb-2" />
+        <h3 className="text-xl font-bold text-gray-900">Upload Test Log</h3>
+        <p className="text-sm text-gray-500 font-medium">Drag and drop your .csv or .log file here, or click to browse</p>
       </div>
     </div>
   );

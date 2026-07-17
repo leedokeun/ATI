@@ -88,24 +88,22 @@ export default function MainLayout() {
     URL.revokeObjectURL(url);
   };
 
-  const colors = ["#2563eb", "#dc2626", "#F27D26", "#16a34a", "#9333ea", "#0891b2"];
+  const colors = ["#F37321", "#1A1A1A", "#4B5563", "#3B82F6", "#10B981", "#8B5CF6"];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#E4E3E0] text-[#141414] font-sans overflow-hidden border-[8px] border-[#141414]">
+    <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden">
       {/* Header */}
-      <header className="h-12 flex items-center justify-between px-4 bg-[#141414] text-white shrink-0">
+      <header className="h-16 flex items-center justify-between px-6 bg-[#1A1A1A] text-white shrink-0 shadow-md z-20">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-[#F27D26] rotate-45"></div>
-            <span className="font-mono font-bold tracking-tighter text-lg uppercase">ATI // AeroTest Insight</span>
+          <div className="w-8 h-8 bg-[#F37321] rounded flex items-center justify-center shadow-sm">
+            <Activity className="w-5 h-5 text-white" />
           </div>
-          <div className="h-4 w-[1px] bg-white/20"></div>
-          <span className="text-[10px] font-mono text-white/60 tracking-widest">SYSTEM READY // MISSION_HILS_102</span>
+          <span className="font-semibold text-lg tracking-tight">Hanwha AeroTest Insight</span>
         </div>
-        <div className="flex items-center gap-6 text-[11px] font-mono">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
-            <span>STATUS: {isAnalyzing ? "ANALYZING" : "LIVE"}</span>
+        <div className="flex items-center gap-4 text-sm font-medium">
+          <div className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+            <span className={cn("w-2 h-2 rounded-full", isAnalyzing ? "bg-[#F37321] animate-pulse shadow-[0_0_8px_#F37321]" : "bg-green-400 shadow-[0_0_8px_#4ade80]")}></span>
+            <span className="opacity-90 tracking-wide">{isAnalyzing ? "ANALYZING" : "SYSTEM LIVE"}</span>
           </div>
         </div>
       </header>
@@ -120,64 +118,61 @@ export default function MainLayout() {
         ) : (
           <>
             {/* Sidebar */}
-            <aside className="w-64 border-r border-[#141414] flex flex-col shrink-0 bg-[#D8D7D2]">
-              <div className="p-3 border-b border-[#141414] bg-[#141414]/5">
-                <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">Parameters</span>
+            <aside className="w-72 bg-white border-r border-gray-200 flex flex-col shrink-0 shadow-sm z-10">
+              <div className="p-5 border-b border-gray-100">
+                <span className="text-sm font-bold text-gray-800 tracking-wide">TEST PARAMETERS</span>
               </div>
-              <div className="flex-1 overflow-y-auto p-2 space-y-1">
+              <div className="flex-1 overflow-y-auto p-3 space-y-1">
                 {columns.map((col) => (
-                  <label key={col} className="flex items-center gap-2 p-2 text-xs font-mono hover:bg-white/40 cursor-pointer">
+                  <label key={col} className="flex items-center gap-3 p-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
                     <input
                       type="checkbox"
                       checked={selectedColumns.has(col)}
                       onChange={() => toggleColumn(col)}
-                      className="accent-[#141414]"
+                      className="w-4 h-4 text-[#F37321] border-gray-300 rounded focus:ring-[#F37321] focus:ring-2"
                     />
                     <span className="truncate">{col}</span>
                   </label>
                 ))}
               </div>
-              <div className="p-3 border-t border-[#141414] bg-[#141414] text-white flex flex-col gap-2">
+              <div className="p-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3">
                 <button
                   onClick={runVibeCheck}
                   disabled={isAnalyzing || selectedColumns.size === 0}
-                  className="w-full py-2 bg-[#F27D26] text-black font-bold text-[11px] uppercase tracking-tighter disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 bg-[#F37321] hover:bg-[#d9651a] text-white font-bold text-sm tracking-wide rounded shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  {isAnalyzing ? "ANALYZING..." : "+ RUN VIBE-CHECK"}
+                  {isAnalyzing ? "ANALYZING..." : "RUN AI VIBE-CHECK"}
                 </button>
                 <button
                   onClick={generateReport}
-                  className="w-full py-2 bg-[#141414] border border-[#141414] hover:bg-[#222] text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-100 text-gray-800 font-bold text-sm tracking-wide rounded shadow-sm flex items-center justify-center gap-2 transition-all"
                 >
-                  <span>Auto-Reporter</span>
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
-                  </svg>
+                  <FileText className="w-4 h-4" />
+                  <span>EXPORT REPORT</span>
                 </button>
               </div>
             </aside>
 
             {/* Dashboard Area */}
-            <section className="flex-1 flex flex-col overflow-hidden">
+            <section className="flex-1 flex flex-col overflow-hidden bg-gray-50">
               
               {/* Vibe-Check Banner */}
               {analysis && (
-                <div className="p-4 border-b border-[#141414] bg-[#EBEAE6]">
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-50 block mb-3">Vibe-Check Analysis</span>
-                  <div className="bg-[#141414] text-white p-3 rounded-sm flex items-start gap-3">
+                <div className="p-5 border-b border-gray-200 bg-white shadow-sm z-0">
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Analysis Result</span>
+                  <div className={cn("p-4 rounded-lg flex items-start gap-4 border", analysis.anomaliesFound ? "bg-red-50 border-red-100 text-red-900" : "bg-green-50 border-green-100 text-green-900")}>
                     <div className="mt-0.5">
-                      {analysis.anomaliesFound ? <AlertTriangle className="w-4 h-4 text-[#F27D26]" /> : <CheckCircle className="w-4 h-4 text-green-500" />}
+                      {analysis.anomaliesFound ? <AlertTriangle className="w-6 h-6 text-[#F37321]" /> : <CheckCircle className="w-6 h-6 text-green-600" />}
                     </div>
                     <div>
-                      <p className="text-[11px] font-mono leading-relaxed mb-2">
-                        <span className={analysis.anomaliesFound ? "text-[#F27D26]" : "text-green-500"}>
-                          {analysis.anomaliesFound ? "@ANOMALIES_DETECTED" : "@SYSTEMS_NORMAL"}
+                      <p className="text-sm font-semibold leading-relaxed mb-1">
+                        <span className={analysis.anomaliesFound ? "text-[#F37321] font-bold" : "text-green-700 font-bold"}>
+                          {analysis.anomaliesFound ? "ANOMALIES DETECTED" : "SYSTEMS NORMAL"}
                         </span>
-                        <br/>
-                        {analysis.summary}
                       </p>
+                      <p className="text-sm opacity-90">{analysis.summary}</p>
                       {analysis.details.length > 0 && (
-                        <ul className="text-[10px] font-mono opacity-80 list-disc list-inside mt-1">
+                        <ul className="text-sm opacity-80 list-disc list-inside mt-2 space-y-1">
                           {analysis.details.map((d, i) => <li key={i}>{d}</li>)}
                         </ul>
                       )}
@@ -187,55 +182,59 @@ export default function MainLayout() {
               )}
 
               {/* Chart */}
-              <div className="flex-1 flex flex-col overflow-hidden bg-[#E4E3E0]">
-                <div className="flex justify-between items-end p-4 border-b border-[#141414]">
-                  <h2 className="font-serif italic text-lg">Synchronized Telemetry</h2>
-                  <div className="flex gap-4 font-mono text-[10px]">
-                    <span className="opacity-60">{data.length} RECORDS LOADED</span>
+              <div className="flex-1 flex flex-col p-6 overflow-hidden">
+                <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex-1 flex flex-col overflow-hidden">
+                  <div className="flex justify-between items-center p-5 border-b border-gray-100">
+                    <h2 className="font-bold text-lg text-gray-900 tracking-tight">Synchronized Telemetry</h2>
+                    <div className="flex gap-4">
+                      <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{data.length} records loaded</span>
+                    </div>
                   </div>
-                </div>
-                
-                {selectedColumns.size === 0 ? (
-                  <div className="flex-1 flex items-center justify-center font-mono text-[10px] uppercase tracking-widest opacity-40">
-                    Select parameters from the sidebar to begin
-                  </div>
-                ) : (
-                  <div className="flex-1 relative border-[#141414]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={data} margin={{ top: 20, right: 30, left: 10, bottom: 20 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#141414" strokeOpacity={0.1} />
-                        <XAxis 
-                          dataKey="time" 
-                          tick={{ fill: '#141414', fontSize: 10, fontFamily: 'monospace' }}
-                          tickLine={{ stroke: '#141414' }}
-                          axisLine={{ stroke: '#141414' }}
-                        />
-                        <YAxis 
-                          tick={{ fill: '#141414', fontSize: 10, fontFamily: 'monospace' }}
-                          tickLine={{ stroke: '#141414' }}
-                          axisLine={{ stroke: '#141414' }}
-                        />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#141414', border: '1px solid #F27D26', borderRadius: '0', color: '#fff', fontSize: '11px', fontFamily: 'monospace' }}
-                          itemStyle={{ color: '#E4E3E0' }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '10px', fontFamily: 'monospace', textTransform: 'uppercase' }}/>
-                        {Array.from(selectedColumns).map((col: string, idx: number) => (
-                          <Line
-                            key={col}
-                            type="monotone"
-                            dataKey={col}
-                            stroke={colors[idx % colors.length]}
-                            dot={false}
-                            strokeWidth={1.5}
-                            activeDot={{ r: 4, fill: '#141414', stroke: colors[idx % colors.length] }}
+                  
+                  {selectedColumns.size === 0 ? (
+                    <div className="flex-1 flex items-center justify-center text-sm font-medium text-gray-400">
+                      Select parameters from the sidebar to begin visualization
+                    </div>
+                  ) : (
+                    <div className="flex-1 relative p-4">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
+                          <XAxis 
+                            dataKey="time" 
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
+                            tickLine={false}
+                            axisLine={{ stroke: '#D1D5DB' }}
+                            dy={10}
                           />
-                        ))}
-                        <Brush dataKey="time" height={20} stroke="#141414" fill="#EBEAE6" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
+                          <YAxis 
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
+                            tickLine={false}
+                            axisLine={{ stroke: '#D1D5DB' }}
+                            dx={-10}
+                          />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#fff', border: '1px solid #E5E7EB', borderRadius: '8px', color: '#111', fontSize: '13px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                            itemStyle={{ fontWeight: 600 }}
+                          />
+                          <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '13px', fontWeight: 600 }}/>
+                          {Array.from(selectedColumns).map((col: string, idx: number) => (
+                            <Line
+                              key={col}
+                              type="monotone"
+                              dataKey={col}
+                              stroke={colors[idx % colors.length]}
+                              dot={false}
+                              strokeWidth={2}
+                              activeDot={{ r: 5, fill: colors[idx % colors.length], stroke: '#fff', strokeWidth: 2 }}
+                            />
+                          ))}
+                          <Brush dataKey="time" height={30} stroke="#D1D5DB" fill="#F9FAFB" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  )}
+                </div>
               </div>
             </section>
           </>
