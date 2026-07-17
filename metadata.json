@@ -1,0 +1,6 @@
+{
+  "name": "AeroTest Insight",
+  "description": "Defense SW test log visualization and automatic result report generation web app",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
