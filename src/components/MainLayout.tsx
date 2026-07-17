@@ -11,6 +11,7 @@ export default function MainLayout() {
   const [selectedColumns, setSelectedColumns] = useState<Set<string>>(new Set());
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleDataParsed = (parsedData: LogDataPoint[], parsedColumns: string[]) => {
     setData(parsedData);
@@ -18,6 +19,7 @@ export default function MainLayout() {
     // Auto-select first 3 columns if available
     setSelectedColumns(new Set(parsedColumns.slice(0, 3)));
     setAnalysis(null);
+    setErrorMsg(null);
   };
 
   const toggleColumn = (col: string) => {
@@ -33,6 +35,7 @@ export default function MainLayout() {
   const runVibeCheck = async () => {
     if (!data) return;
     setIsAnalyzing(true);
+    setErrorMsg(null);
     
     // Sample data to send (every 10th row, up to 100 rows) for faster/cheaper analysis
     const sampleData = data.filter((_, i) => i % Math.max(1, Math.floor(data.length / 100)) === 0);
@@ -49,9 +52,13 @@ export default function MainLayout() {
       if (response.ok) {
         const result = await response.json();
         setAnalysis(result);
+      } else {
+        const err = await response.json();
+        setErrorMsg(err.error || "Failed to analyze log.");
       }
     } catch (error) {
       console.error("Failed to run vibe check", error);
+      setErrorMsg("Network error occurred while trying to run vibe check.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -156,6 +163,14 @@ export default function MainLayout() {
             {/* Dashboard Area */}
             <section className="flex-1 flex flex-col overflow-hidden bg-gray-50">
               
+              {/* Error Banner */}
+              {errorMsg && (
+                <div className="p-4 bg-red-50 border-b border-red-200 text-red-700 flex items-center gap-3 shadow-sm z-0">
+                  <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
+                  <p className="text-sm font-medium">{errorMsg}</p>
+                </div>
+              )}
+
               {/* Vibe-Check Banner */}
               {analysis && (
                 <div className="p-5 border-b border-gray-200 bg-white shadow-sm z-0">
